@@ -1,18 +1,27 @@
-import json
 import requests
 
-hakusana = input("Anna hakusana: ")
 
-# Pyynnön malli: https://api.tvmaze.com/search/shows?q=girls
-pyyntö = "https://api.tvmaze.com/search/shows?q=" + hakusana
+def hae_chuck_norris_vitsi():
+    url = "https://api.chucknorris.io/jokes/random"
+    vastaus = requests.get(url)
 
-try:
-    vastaus = requests.get(pyyntö)
-    if vastaus.status_code==200:
-        json_vastaus = vastaus.json()
-        print(json.dumps(json_vastaus, indent=2))
-        for a in json_vastaus:
-            print(a["show"]["name"])
+    if vastaus.status_code == 200:
+        vitsi_data = vastaus.json()
+        vitsi = vitsi_data["value"]
+        return vitsi
+    else:
+        return None
 
-except requests.exceptions.RequestException as e:
-    print ("Hakua ei voitu suorittaa.")
+
+def main():
+    chuck_norris_vitsi = hae_chuck_norris_vitsi()
+
+    if chuck_norris_vitsi:
+        print("Chuck Norris sanoo:")
+        print(chuck_norris_vitsi)
+    else:
+        print("Vitsin hakemisessa tapahtui virhe.")
+
+
+if __name__ == "__main__":
+    main()
